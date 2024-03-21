@@ -39,7 +39,7 @@ class TabDateils extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          margin: EdgeInsets.only(left: 13,right: 13),
+          margin: const EdgeInsets.only(left: 13,right: 13),
           child: CachedNetworkImage(
             fit: BoxFit.fill,
             height: MediaQuery.of(context).size.height * .25,
