@@ -10,6 +10,8 @@ abstract class apimanger{
   static const String apiKey = "d47498976b9640c38d3656b1aafe3944";
   static const String sourcesEndPoint = "/v2/top-headlines/sources";
   static const String articlesEndPoint = "/v2/everything";
+  static  String Sourseid = "";
+
 
  static Future<SourcesResponse> Loaider(String sourceid)async{
    try{
@@ -36,6 +38,7 @@ abstract class apimanger{
      Response response=await get(url);
      Map mapbody=jsonDecode(response.body);
      ArticlesResponse articlesResponse=ArticlesResponse.fromJson(mapbody);
+     Sourseid=sourceid;
 
      if(response.statusCode>=200&&response.statusCode<300){
        return articlesResponse;

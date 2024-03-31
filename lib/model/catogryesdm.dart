@@ -2,35 +2,35 @@
 import 'package:flutter/material.dart';
 class CategoryDM{
   String id;
-  String title;
+
   String imagePath;
   bool isLeftSided;
-  Color backgroundColor;
+
 
   CategoryDM({required this.id,
-    required this.title,
+
     required this.imagePath,
     required this.isLeftSided,
-    required this.backgroundColor});
+    });
 
   static List<CategoryDM> categories = [
-    CategoryDM(id: "sports", title: "Sports",
+    CategoryDM(id: "sports",
         imagePath: "assets/sports.png", isLeftSided: true,
-        backgroundColor: Colors.red[900]!),
-    CategoryDM(id: "technology", title: "Technology",
+        ),
+    CategoryDM(id: "technology",
         imagePath: "assets/politics.png", isLeftSided: false,
-        backgroundColor: Colors.blue[900]!),
-    CategoryDM(id: "health", title: "Health",
+        ),
+    CategoryDM(id: "health",
         imagePath: "assets/health.png", isLeftSided: true,
-        backgroundColor: Colors.pink),
-    CategoryDM(id: "business", title: "Business",
+       ),
+    CategoryDM(id: "business",
         imagePath: "assets/business.png", isLeftSided: false,
-        backgroundColor: Colors.orange[900]!),
-    CategoryDM(id: "entertainment", title: "Entertainment",
+        ),
+    CategoryDM(id: "entertainment",
         imagePath: "assets/enviroment.png", isLeftSided: true,
-        backgroundColor: Colors.lightBlue),
-    CategoryDM(id: "science", title: "Science",
+        ),
+    CategoryDM(id: "science",
         imagePath: "assets/science.png", isLeftSided: false,
-        backgroundColor: Colors.yellow[500]!)
+        )
   ];
 }

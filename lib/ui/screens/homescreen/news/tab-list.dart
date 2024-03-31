@@ -16,21 +16,24 @@ class Tablist extends StatefulWidget {
 
 class _TablistState extends State<Tablist> {
   int currentindex=0;
-  @override
+  late String sour;
+
+    @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: apimanger.Loaider(widget.sourceid),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return errprviwe(error: snapshot.error.toString());
-        } else if (snapshot.hasData) {
-          return tabList(snapshot.data!.sources!);
-        } else {
-          return const apploader();
-        }
-      },
-    );
+      return FutureBuilder(
+        future: apimanger.Loaider(widget.sourceid),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return errprviwe(error: snapshot.error.toString());
+          } else if (snapshot.hasData) {
+            return tabList(snapshot.data!.sources!);
+          } else {
+            return const apploader();
+          }
+        },
+      );
   }
+
 
   Widget tabList(List<Source> sources) {
 
