@@ -2,23 +2,30 @@
 import 'package:flutter/material.dart';
 
 class errprviwe extends StatelessWidget {
-  const errprviwe({
+   errprviwe({
     super.key,
     required this.error,
+    required this.refresh
   });
 
   final String error;
+ final Function? refresh;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(error),
-        ElevatedButton(
-          onPressed: () {},
-          child: Text("Refresh"),
+        Center(child: Text(error)),
+        Center(
+          child: ElevatedButton(
+            onPressed: () {
+              refresh?.call();
+            },
+            child: Text("Refresh"),
+          ),
         ),
       ],
     );
   }
+
 }

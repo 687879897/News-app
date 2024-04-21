@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/data/apimanger.dart';
 import 'package:news_app/model/articalresponce.dart';
 import 'package:news_app/ui/commenwidget/errorviwe.dart';
+import 'package:news_app/ui/screens/homescreen/news/tab-list/tab-list-veiwmodel.dart';
 
 import '../../commenwidget/apploader.dart';
 
@@ -17,6 +18,7 @@ class Searchscreen extends StatefulWidget {
 }
 
 class _SearchscreenState extends State<Searchscreen> {
+  TabListViewModel viewModel=TabListViewModel();
   String titel = "";
   TextEditingController titelcontroller = TextEditingController();
 
@@ -82,7 +84,7 @@ class _SearchscreenState extends State<Searchscreen> {
               future: apimanger.loadingartical(widget.sourceid),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return errprviwe(error: snapshot.error.toString());
+                  return errprviwe(error: snapshot.error.toString(),refresh: (){viewModel.loadtablist(widget.sourceid);});
                 } else if (snapshot.hasData) {
                   return aricalslist(snapshot.data!.articles!, context);
                 } else {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/model/catogryesdm.dart';
-import 'package:news_app/ui/screens/homescreen/news/tab-list.dart';
+import 'package:news_app/ui/screens/homescreen/news/tab-list/tab-list.dart';
 import 'package:news_app/ui/screens/homescreen/setting/setting_tab.dart';
 import 'package:news_app/ui/screens/search/search.dart';
 

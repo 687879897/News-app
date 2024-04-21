@@ -1,29 +1,46 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/data/apimanger.dart';
 import 'package:news_app/model/articalresponce.dart';
 import 'package:news_app/ui/commenwidget/errorviwe.dart';
+import 'package:news_app/ui/screens/homescreen/news/news-state.dart';
+import 'package:news_app/ui/screens/homescreen/news/tab-details/tab-details-veiwmodel.dart';
+import 'package:provider/provider.dart';
 
-import '../../../commenwidget/apploader.dart';
+import '../../../../commenwidget/apploader.dart';
 
-class TabDateils extends StatelessWidget {
-  const TabDateils({super.key, required this.sourceid});
-
+class TabDateils extends StatefulWidget {
+   TabDateils({super.key, required this.sourceid});
   final String sourceid;
 
   @override
+  State<TabDateils> createState() => _TabDateilsState();
+}
+
+class _TabDateilsState extends State<TabDateils> {
+  TabDetailsViewModel viewModel=TabDetailsViewModel();
+  @override
+  void initState() {
+    // TODO: implement initState
+    viewModel.loadtablist(widget.sourceid);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: apimanger.loadingartical(sourceid),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return errprviwe(error: snapshot.error.toString());
-          } else if (snapshot.hasData) {
-            return aricalslist(snapshot.data!.articles!, context);
+    return ChangeNotifierProvider(
+      create: (_) => viewModel,
+      child: Builder(
+        builder: (context) {
+          viewModel=Provider.of(context,listen: true);
+          if (viewModel.value == state.loading) {
+            return apploader();
+          } else if (viewModel.value == state.sucsses) {
+            return aricalslist(viewModel.artical,context);
           } else {
-            return const apploader();
+            return errprviwe(error: viewModel.error,refresh: (){viewModel.loadtablist(widget.sourceid);});
           }
-        });
+        },
+      ),
+    );
   }
 
   Widget aricalslist(List<Article?> articles, BuildContext context) {
