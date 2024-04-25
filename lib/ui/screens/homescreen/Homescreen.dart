@@ -61,10 +61,10 @@ class _HomeState extends State<Home> {
               actions: [
                 (body is! CategoriesTab)
                     ? InkWell(
-                        onTap: () {
-                          Navigator.pushReplacementNamed(
-                              context, Searchscreen.routeName);
-                        },
+                        // onTap: () {
+                        //   Navigator.pushReplacementNamed(
+                        //       context, Searchscreen.routeName);
+                        // },
                         child: const Icon(Icons.search))
                     : const Text("")
               ],

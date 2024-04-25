@@ -1,4 +1,4 @@
-enum state{
+enum Apistate{
   sucsses,
   loading,
   error

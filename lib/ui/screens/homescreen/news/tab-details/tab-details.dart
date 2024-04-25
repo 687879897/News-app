@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:news_app/model/articalresponce.dart';
+import 'package:news_app/repo/oflinedata/repo_ofline_impl.dart';
+import 'package:news_app/repo/onlinedata/repo_online_impl.dart';
 import 'package:news_app/ui/commenwidget/errorviwe.dart';
 import 'package:news_app/ui/screens/homescreen/news/news-state.dart';
 import 'package:news_app/ui/screens/homescreen/news/tab-details/tab-details-veiwmodel.dart';
-import 'package:provider/provider.dart';
-
+import '../../../../../repo/newsrepoimpl.dart';
 import '../../../../commenwidget/apploader.dart';
 
 class TabDateils extends StatefulWidget {
@@ -17,7 +20,7 @@ class TabDateils extends StatefulWidget {
 }
 
 class _TabDateilsState extends State<TabDateils> {
-  TabDetailsViewModel viewModel=TabDetailsViewModel();
+  TabDetailsViewModel viewModel = TabDetailsViewModel(NewsRepoImpl(RepooflineImpl(),RepoonlineImpl(),InternetConnectionChecker()));
   @override
   void initState() {
     // TODO: implement initState
@@ -26,20 +29,23 @@ class _TabDateilsState extends State<TabDateils> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => viewModel,
-      child: Builder(
-        builder: (context) {
-          viewModel=Provider.of(context,listen: true);
-          if (viewModel.value == state.loading) {
-            return apploader();
-          } else if (viewModel.value == state.sucsses) {
-            return aricalslist(viewModel.artical,context);
-          } else {
-            return errprviwe(error: viewModel.error,refresh: (){viewModel.loadtablist(widget.sourceid);});
+    return BlocBuilder<TabDetailsViewModel,Tabliststate>(
+      bloc: viewModel,
+      builder: (context,state) {
+        if(state.state==Apistate.loading){
+          return apploader();
+        }
+        else if(state.state==Apistate.sucsses){
+          return aricalslist(state.artical,context);
+        }
+        else{
+          return errprviwe(error: state.error, refresh: (){
+            viewModel.loadtablist(widget.sourceid);
           }
-        },
-      ),
+          );
+        }
+
+      },
     );
   }
 

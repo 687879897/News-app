@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:news_app/repo/onlinedata/repoonline.dart';
 
-import '../model/articalresponce.dart';
-import '../model/sourcesresponse.dart';
+import '../../model/articalresponce.dart';
+import '../../model/sourcesresponse.dart';
 
-abstract class apimanger{
+ class RepoonlineImpl extends Repoonline{
   static const String baseUrl = "https://newsapi.org";
   static const String apiKey = "d47498976b9640c38d3656b1aafe3944";
   static const String sourcesEndPoint = "/v2/top-headlines/sources";
@@ -13,7 +14,7 @@ abstract class apimanger{
   static  String Sourseid = "";
 
 
- static Future<SourcesResponse> Loaider(String sourceid)async{
+  Future<SourcesResponse> Loaider(String sourceid)async{
    try{
      Uri url=Uri.parse("$baseUrl$sourcesEndPoint?apiKey=$apiKey&category=$sourceid");
      Response response=await get(url);
@@ -32,7 +33,7 @@ abstract class apimanger{
    }
 
 }
- static Future<ArticlesResponse> loadingartical(String sourceid)async{
+  Future<ArticlesResponse> loadingartical(String sourceid)async{
    try{
      Uri url=Uri.parse("$baseUrl$articlesEndPoint?apiKey=$apiKey&sources=$sourceid");
      Response response=await get(url);

@@ -1,28 +1,39 @@
-import 'package:flutter/cupertino.dart';
-import 'package:news_app/data/apimanger.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/ui/screens/homescreen/news/news-state.dart';
 
 import '../../../../../model/articalresponce.dart';
+import '../../../../../repo/newsrepo.dart';
 
-class TabDetailsViewModel extends ChangeNotifier{
-  state value=state.loading;
+
+class TabDetailsViewModel extends Cubit<Tabliststate>{
+  Apistate value=Apistate.loading;
   @override
   late String sourceid;
-   List<Article>artical=[];
-  String error="";
+
+  NewsRepo newsRepo;
+  TabDetailsViewModel(this.newsRepo) : super(Tabliststate());
+
   Future<void> loadtablist(sourceid)async{
-    value=state.loading;
-    notifyListeners();
+
+    //notifyListeners();
+    emit(Tabliststate(state: Apistate.loading));
     try {
-      ArticlesResponse articlesResponse = await apimanger.loadingartical(sourceid);
-      value=state.sucsses;
-      artical = articlesResponse.articles!;
-      notifyListeners();
+      ArticlesResponse articlesResponse = await newsRepo.loadingartical(sourceid);
+
+      //notifyListeners();
+      emit(Tabliststate(state: Apistate.sucsses,artical: articlesResponse.articles!));
     }catch(e){
-      value=state.error;
-      error=e.toString();
-      notifyListeners();
+
+
+     // notifyListeners();
+      emit(Tabliststate(state: Apistate.error,error: e.toString()));
     }
 
   }
+}
+class Tabliststate{
+  Apistate state;
+  Tabliststate({this.state=Apistate.loading,this.error='',this.artical=const []});
+  List<Article>artical=[];
+  String error="";
 }

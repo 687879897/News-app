@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:news_app/model/sourcesresponse.dart';
+import 'package:news_app/repo/newsrepoimpl.dart';
+import 'package:news_app/repo/onlinedata/repo_online_impl.dart';
 import 'package:news_app/ui/screens/homescreen/news/news-state.dart';
 import 'package:news_app/ui/screens/homescreen/news/tab-list/tab-list-veiwmodel.dart';
 import 'package:provider/provider.dart';
-
+import '../../../../../repo/oflinedata/repo_ofline_impl.dart';
 import '../../../../commenwidget/apploader.dart';
 import '../../../../commenwidget/errorviwe.dart';
 import '../tab-details/tab-details.dart';
@@ -17,7 +21,7 @@ class Tablist extends StatefulWidget {
 }
 
 class _TablistState extends State<Tablist> {
-  TabListViewModel viewModel = TabListViewModel();
+  TabListViewModel viewModel = TabListViewModel(NewsRepoImpl(RepooflineImpl(),RepoonlineImpl(),InternetConnectionChecker()));
   int currentindex = 0;
   void initState() {
     // TODO: implement initState
@@ -26,20 +30,23 @@ class _TablistState extends State<Tablist> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => viewModel,
-      child: Builder(
-        builder: (context) {
-          viewModel=Provider.of(context,listen: true);
-          if (viewModel.value == state.loading) {
-            return apploader();
-          } else if (viewModel.value == state.sucsses) {
-            return tabList(viewModel.source);
-          } else {
-            return errprviwe(error: viewModel.error,refresh: (){viewModel.loadtablist(widget.sourceid);},);
+    return BlocBuilder<TabListViewModel,Tabliststate>(
+      bloc: viewModel,
+      builder: (context,state) {
+        if(state.state==Apistate.loading){
+          return apploader();
+        }
+        else if(state.state==Apistate.sucsses){
+          return tabList(state.source);
+        }
+        else{
+          return errprviwe(error: state.error, refresh: (){
+            viewModel.loadtablist(widget.sourceid);
           }
-        },
-      ),
+          );
+        }
+
+      },
     );
   }
 
